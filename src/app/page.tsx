@@ -10,11 +10,14 @@ const DEFAULT_PROMPT = `You are an AI vision assistant.
 
 The image is a single frame from a video.
 
-Describe what is happening in the scene.
+Look carefully at the image and identify the most important visual elements such as people, objects, and actions.
+
+Then describe what is happening in the scene.
 
 Rules:
-- Describe only what is clearly visible.
+- Describe only what is clearly visible in the image.
 - Do not invent details or create stories.
+- Do not guess intentions or events that cannot be seen.
 - If something is uncertain, say it is unclear.
 
 Write the answer in natural Korean.
@@ -306,10 +309,10 @@ export default function Home() {
       <main className="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 py-6 space-y-6">
         {/* COI warning */}
         {gpuStatus.crossOriginIsolated === false && (
-          <div className="p-4 bg-red-500/10 border border-red-500/30 rounded-lg flex items-start gap-3">
-            <span className="text-red-500 text-lg">⚠</span>
+          <div className="p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3">
+            <span className="text-[var(--error)] text-lg">⚠</span>
             <div>
-              <p className="text-sm font-medium text-red-400">
+              <p className="text-sm font-medium text-[var(--error)]">
                 Cross-Origin Isolation 비활성
               </p>
               <p className="text-xs text-[var(--text-secondary)] mt-1">
@@ -321,10 +324,10 @@ export default function Home() {
 
         {/* WebGPU warning */}
         {gpuStatus.browserSupport === false && (
-          <div className="p-4 bg-yellow-500/10 border border-yellow-500/30 rounded-lg flex items-start gap-3">
-            <span className="text-yellow-500 text-lg">⚠</span>
+          <div className="p-4 bg-amber-50 border border-amber-200 rounded-lg flex items-start gap-3">
+            <span className="text-amber-600 text-lg">⚠</span>
             <div>
-              <p className="text-sm font-medium text-yellow-400">
+              <p className="text-sm font-medium text-amber-700">
                 WebGPU 미지원 브라우저
               </p>
               <p className="text-xs text-[var(--text-secondary)] mt-1">
@@ -338,13 +341,13 @@ export default function Home() {
         {gpuStatus.runtimeBackend === "wasm" &&
           gpuStatus.adapterAvailable === true &&
           gpuStatus.fallbackReason && (
-            <div className="p-4 bg-orange-500/10 border border-orange-500/30 rounded-lg flex items-start gap-3">
-              <span className="text-orange-500 text-lg">⚠</span>
+            <div className="p-4 bg-amber-50 border border-amber-200 rounded-lg flex items-start gap-3">
+              <span className="text-amber-600 text-lg">⚠</span>
               <div>
-                <p className="text-sm font-medium text-orange-400">
+                <p className="text-sm font-medium text-amber-700">
                   WASM 폴백 모드로 실행중
                 </p>
-                <p className="text-xs text-orange-300/80 mt-1 font-mono break-all">
+                <p className="text-xs text-[var(--text-secondary)] mt-1 font-mono break-all">
                   {gpuStatus.fallbackReason}
                 </p>
               </div>
@@ -369,16 +372,16 @@ export default function Home() {
               onChange={(e) => setYoutubeUrl(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleDownload()}
               placeholder="YouTube URL을 입력하세요 (예: https://www.youtube.com/watch?v=...)"
-              className="flex-1 bg-[var(--bg-tertiary)] border border-[var(--border-color)] rounded-lg px-4 py-2.5 text-sm
+              className="flex-1 bg-white border border-[var(--border-color)] rounded-lg px-4 py-2.5 text-sm
                 text-[var(--text-primary)] placeholder-[var(--text-secondary)]
-                focus:outline-none focus:border-[var(--accent)] transition-colors"
+                focus:outline-none focus:border-[var(--accent)] focus:ring-1 focus:ring-[var(--accent)]/20 transition-colors"
             />
             <button
               onClick={handleDownload}
               disabled={isDownloading || !youtubeUrl.trim()}
               className="px-6 py-2.5 rounded-lg text-sm font-medium bg-[var(--accent)] text-white
                 hover:bg-[var(--accent-hover)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed
-                flex items-center gap-2 min-w-[140px] justify-center"
+                flex items-center gap-2 min-w-[140px] justify-center shadow-sm"
             >
               {isDownloading ? (
                 <>
@@ -393,7 +396,9 @@ export default function Home() {
             </button>
           </div>
           {downloadError && (
-            <p className="mt-2 text-sm text-[var(--error)]">{downloadError}</p>
+            <p className="mt-2 text-sm text-[var(--error)]">
+              {downloadError}
+            </p>
           )}
         </div>
 
@@ -409,12 +414,12 @@ export default function Home() {
 
             {/* Console */}
             <div className="bg-[var(--bg-secondary)] rounded-lg border border-[var(--border-color)] p-4">
-              <h3 className="text-sm font-medium mb-2 text-[var(--text-secondary)]">
+              <h3 className="text-sm font-medium mb-2 text-[var(--text-primary)]">
                 콘솔
               </h3>
               <div
                 ref={logContainerRef}
-                className="h-40 overflow-y-auto bg-[var(--bg-tertiary)] rounded-lg border border-[var(--border-color)] p-3 font-mono text-xs space-y-1"
+                className="h-40 overflow-y-auto bg-white rounded-lg border border-[var(--border-color)] p-3 font-mono text-xs space-y-1"
               >
                 {logs.length === 0 ? (
                   <p className="text-[var(--text-secondary)]">
@@ -428,9 +433,9 @@ export default function Home() {
                         log.includes("──")
                           ? "text-[var(--accent)] font-semibold"
                           : log.includes("✗")
-                            ? "text-red-400"
+                            ? "text-[var(--error)]"
                             : log.includes("⚠")
-                              ? "text-yellow-400"
+                              ? "text-amber-600"
                               : "text-[var(--text-secondary)]"
                       }
                     >
@@ -458,7 +463,7 @@ export default function Home() {
         </div>
       </main>
 
-      <footer className="border-t border-[var(--border-color)] py-3 text-center text-xs text-[var(--text-secondary)]">
+      <footer className="border-t border-[var(--border-color)] bg-[var(--bg-secondary)] py-3 text-center text-xs text-[var(--text-secondary)]">
         On-Device Video Frame Analysis · Qwen 3.5 Vision · Transformers.js +{" "}
         {gpuStatus.runtimeBackend === "wasm" ? "WASM" : "WebGPU"} ·
         모든 AI 추론은 브라우저에서 실행됩니다

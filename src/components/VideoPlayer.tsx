@@ -67,7 +67,6 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(
 
     const stepFrame = useCallback((direction: number) => {
       if (!videoRef.current) return;
-      // Approximate frame step (~1/30th of a second)
       videoRef.current.currentTime += direction * (1 / 30);
     }, []);
 
@@ -81,8 +80,6 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(
       const ctx = canvas.getContext("2d");
       if (!ctx) return;
 
-      // Capture at the video's original resolution — no downscaling.
-      // The vision model's processor handles its own resizing internally.
       const width = video.videoWidth;
       const height = video.videoHeight;
 
@@ -100,7 +97,6 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(
       return `${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
     };
 
-    // Reset state when video URL changes
     useEffect(() => {
       setCurrentTime(0);
       setDuration(0);
@@ -113,7 +109,7 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(
         <div className="aspect-video bg-[var(--bg-tertiary)] rounded-lg border border-[var(--border-color)] flex items-center justify-center">
           <div className="text-center text-[var(--text-secondary)]">
             <svg
-              className="w-16 h-16 mx-auto mb-3 opacity-30"
+              className="w-16 h-16 mx-auto mb-3 opacity-20"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -134,7 +130,7 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(
     return (
       <div className="space-y-3">
         {/* Video element */}
-        <div className="relative aspect-video bg-black rounded-lg overflow-hidden border border-[var(--border-color)]">
+        <div className="relative aspect-video bg-[#1a1a1a] rounded-lg overflow-hidden border border-[var(--border-color)] shadow-sm">
           <video
             ref={videoRef}
             src={videoUrl}
@@ -148,7 +144,7 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(
         </div>
 
         {/* Controls */}
-        <div className="bg-[var(--bg-tertiary)] rounded-lg border border-[var(--border-color)] p-3 space-y-3">
+        <div className="bg-[var(--bg-secondary)] rounded-lg border border-[var(--border-color)] p-3 space-y-3">
           {/* Seek bar */}
           <div className="flex items-center gap-3">
             <span className="text-xs text-[var(--text-secondary)] w-12 text-right font-mono">
@@ -161,9 +157,9 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(
               step={0.01}
               value={currentTime}
               onChange={handleSeek}
-              className="flex-1 h-1.5 rounded-full appearance-none bg-[var(--border-color)] cursor-pointer
-                [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3
-                [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-[var(--accent)]"
+              className="flex-1 h-1.5 rounded-full appearance-none bg-[var(--accent-light)] cursor-pointer
+                [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3.5 [&::-webkit-slider-thumb]:h-3.5
+                [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-[var(--accent)] [&::-webkit-slider-thumb]:shadow-sm"
             />
             <span className="text-xs text-[var(--text-secondary)] w-12 font-mono">
               {formatTime(duration)}
@@ -172,30 +168,27 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(
 
           {/* Buttons */}
           <div className="flex items-center gap-2">
-            {/* Frame step backward */}
             <button
               onClick={() => stepFrame(-1)}
-              className="px-2 py-1.5 rounded text-sm bg-[var(--bg-secondary)] border border-[var(--border-color)]
-                hover:border-[var(--accent)] transition-colors"
+              className="px-2 py-1.5 rounded text-sm bg-white border border-[var(--border-color)]
+                hover:border-[var(--accent)] transition-colors shadow-sm"
               title="이전 프레임"
             >
               ◀◀
             </button>
 
-            {/* Play/Pause */}
             <button
               onClick={togglePlay}
-              className="px-4 py-1.5 rounded text-sm font-medium bg-[var(--bg-secondary)] border border-[var(--border-color)]
-                hover:border-[var(--accent)] transition-colors min-w-[80px]"
+              className="px-4 py-1.5 rounded text-sm font-medium bg-white border border-[var(--border-color)]
+                hover:border-[var(--accent)] transition-colors min-w-[80px] shadow-sm"
             >
               {isPlaying ? "일시정지" : "재생"}
             </button>
 
-            {/* Frame step forward */}
             <button
               onClick={() => stepFrame(1)}
-              className="px-2 py-1.5 rounded text-sm bg-[var(--bg-secondary)] border border-[var(--border-color)]
-                hover:border-[var(--accent)] transition-colors"
+              className="px-2 py-1.5 rounded text-sm bg-white border border-[var(--border-color)]
+                hover:border-[var(--accent)] transition-colors shadow-sm"
               title="다음 프레임"
             >
               ▶▶
@@ -203,12 +196,11 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(
 
             <div className="flex-1" />
 
-            {/* Capture & Analyze */}
             <button
               onClick={captureCurrentFrame}
               disabled={isAnalyzing || !isPaused}
               className="px-4 py-1.5 rounded text-sm font-medium bg-[var(--accent)] text-white
-                hover:bg-[var(--accent-hover)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                hover:bg-[var(--accent-hover)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
             >
               {isAnalyzing ? (
                 <span className="flex items-center gap-2">

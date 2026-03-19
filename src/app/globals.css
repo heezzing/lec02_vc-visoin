@@ -1,40 +1,45 @@
 @import "tailwindcss";
 
 :root {
-  --bg-primary: #0a0a0f;
-  --bg-secondary: #12121a;
-  --bg-tertiary: #1a1a2e;
-  --border-color: #2a2a3e;
-  --text-primary: #e4e4e7;
-  --text-secondary: #a1a1aa;
-  --accent: #6366f1;
-  --accent-hover: #818cf8;
-  --success: #22c55e;
-  --warning: #f59e0b;
-  --error: #ef4444;
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #F5F1E8;
+  --bg-tertiary: #FAFAF7;
+  --border-color: #EAEAEA;
+  --text-primary: #2B2B2B;
+  --text-secondary: #7A7A7A;
+  --accent: #8B7355;
+  --accent-hover: #6E5A42;
+  --accent-light: #E6D9C6;
+  --success: #4A7C59;
+  --warning: #B8860B;
+  --error: #C0392B;
 }
 
 body {
   background-color: var(--bg-primary);
   color: var(--text-primary);
   font-family: "Inter", system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
 /* Custom scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 5px;
 }
 ::-webkit-scrollbar-track {
   background: var(--bg-secondary);
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--border-color);
+  background: var(--accent-light);
   border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
 }
 
 /* Video player */
 video {
-  background: #000;
+  background: #1a1a1a;
 }
 
 /* Loading spinner */

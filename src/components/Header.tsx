@@ -14,10 +14,10 @@ export default function Header({
   modelLoadTime,
 }: HeaderProps) {
   const modelStatusConfig = {
-    idle: { label: "모델 미로드", color: "bg-gray-500" },
-    loading: { label: "모델 로딩중...", color: "bg-yellow-500 pulse-dot" },
-    ready: { label: "모델 준비완료", color: "bg-green-500" },
-    error: { label: "모델 오류", color: "bg-red-500" },
+    idle: { label: "모델 미로드", color: "bg-gray-400" },
+    loading: { label: "모델 로딩중...", color: "bg-amber-500 pulse-dot" },
+    ready: { label: "모델 준비완료", color: "bg-[var(--success)]" },
+    error: { label: "모델 오류", color: "bg-[var(--error)]" },
   };
 
   const ms = modelStatusConfig[modelStatus];
@@ -28,33 +28,33 @@ export default function Header({
   if (gpuStatus.runtimeBackend !== null) {
     if (gpuStatus.runtimeBackend === "webgpu") {
       gpuLabel = "WebGPU 실행중";
-      gpuColor = "bg-green-500";
+      gpuColor = "bg-[var(--success)]";
     } else if (gpuStatus.adapterAvailable) {
       gpuLabel = "WASM 폴백";
-      gpuColor = "bg-orange-500";
+      gpuColor = "bg-amber-500";
     } else {
       gpuLabel = "WASM 실행중";
-      gpuColor = "bg-yellow-500";
+      gpuColor = "bg-amber-500";
     }
   } else if (gpuStatus.browserSupport === null) {
     gpuLabel = "GPU 확인중...";
-    gpuColor = "bg-yellow-500 pulse-dot";
+    gpuColor = "bg-amber-500 pulse-dot";
   } else if (!gpuStatus.browserSupport) {
     gpuLabel = "WebGPU 미지원";
-    gpuColor = "bg-red-500";
+    gpuColor = "bg-[var(--error)]";
   } else if (!gpuStatus.adapterAvailable) {
     gpuLabel = "어댑터 없음";
-    gpuColor = "bg-red-500";
+    gpuColor = "bg-[var(--error)]";
   } else {
     gpuLabel = "WebGPU 준비됨";
-    gpuColor = "bg-blue-500";
+    gpuColor = "bg-[var(--accent)]";
   }
 
   return (
     <header className="border-b border-[var(--border-color)] bg-[var(--bg-secondary)] px-6 py-4">
       <div className="flex items-center justify-between max-w-7xl mx-auto">
         <div>
-          <h1 className="text-xl font-bold text-white">
+          <h1 className="text-xl font-semibold tracking-tight text-[var(--text-primary)]">
             On-Device Video Frame Analysis
           </h1>
           <p className="text-sm text-[var(--text-secondary)] mt-0.5">
@@ -67,10 +67,10 @@ export default function Header({
             <span
               className={`w-2 h-2 rounded-full ${
                 gpuStatus.crossOriginIsolated === null
-                  ? "bg-yellow-500 pulse-dot"
+                  ? "bg-amber-500 pulse-dot"
                   : gpuStatus.crossOriginIsolated
-                    ? "bg-green-500"
-                    : "bg-red-500"
+                    ? "bg-[var(--success)]"
+                    : "bg-[var(--error)]"
               }`}
             />
             <span className="text-[var(--text-secondary)]">
@@ -89,7 +89,7 @@ export default function Header({
           </div>
 
           {/* Model status */}
-          <div className="flex items-center gap-2 text-sm px-3 py-1.5 rounded-full bg-[var(--bg-tertiary)] border border-[var(--border-color)]">
+          <div className="flex items-center gap-2 text-sm px-3 py-1.5 rounded-full bg-white border border-[var(--border-color)] shadow-sm">
             <span className={`w-2 h-2 rounded-full ${ms.color}`} />
             <span className="text-[var(--text-secondary)]">{ms.label}</span>
             {modelLoadTime && modelStatus === "ready" && (

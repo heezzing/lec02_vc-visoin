@@ -21,15 +21,15 @@ export default function ModelLoader({
     return (
       <div className="bg-[var(--bg-secondary)] rounded-lg border border-[var(--border-color)] p-3 flex items-center justify-between">
         <div className="flex items-center gap-2 flex-wrap">
-          <span className="w-2 h-2 rounded-full bg-green-500" />
+          <span className="w-2 h-2 rounded-full bg-[var(--success)]" />
           <span className="text-sm text-[var(--text-primary)]">
             Qwen 3.5 Vision (0.8B)
           </span>
           <span
-            className={`text-xs px-2 py-0.5 rounded-full font-medium ${
+            className={`text-xs px-2 py-0.5 rounded-full font-medium border ${
               gpuStatus.runtimeBackend === "webgpu"
-                ? "bg-green-500/15 text-green-400"
-                : "bg-yellow-500/15 text-yellow-400"
+                ? "bg-[var(--success)]/10 text-[var(--success)] border-[var(--success)]/30"
+                : "bg-amber-50 text-amber-700 border-amber-200"
             }`}
           >
             {gpuStatus.runtimeBackend === "webgpu" ? "WebGPU" : "WASM"}
@@ -46,7 +46,7 @@ export default function ModelLoader({
     <div className="bg-[var(--bg-secondary)] rounded-lg border border-[var(--border-color)] p-4">
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="text-sm font-medium">AI 모델</h3>
+          <h3 className="text-sm font-medium text-[var(--text-primary)]">AI 모델</h3>
           <p className="text-xs text-[var(--text-secondary)] mt-0.5">
             Qwen 3.5 Vision 0.8B (ONNX · q4f16 · WebGPU)
           </p>
@@ -56,7 +56,7 @@ export default function ModelLoader({
           <button
             onClick={onLoadModel}
             className="px-4 py-2 rounded-lg text-sm font-medium bg-[var(--accent)] text-white
-              hover:bg-[var(--accent-hover)] transition-colors"
+              hover:bg-[var(--accent-hover)] transition-colors shadow-sm"
           >
             모델 로드
           </button>
@@ -73,7 +73,7 @@ export default function ModelLoader({
               <span>{Math.round(loadingProgress.progress)}%</span>
             )}
           </div>
-          <div className="h-1.5 bg-[var(--bg-tertiary)] rounded-full overflow-hidden">
+          <div className="h-1.5 bg-white rounded-full overflow-hidden border border-[var(--border-color)]">
             {loadingProgress.progress !== undefined ? (
               <div
                 className="h-full bg-[var(--accent)] rounded-full transition-all duration-300"
@@ -87,8 +87,8 @@ export default function ModelLoader({
       )}
 
       {modelStatus === "error" && error && (
-        <div className="mt-3 p-3 bg-red-500/10 border border-red-500/30 rounded-lg">
-          <p className="text-xs text-red-400">{error}</p>
+        <div className="mt-3 p-3 bg-red-50 border border-red-200 rounded-lg">
+          <p className="text-xs text-[var(--error)]">{error}</p>
           <button
             onClick={onLoadModel}
             className="mt-2 text-xs text-[var(--accent)] hover:text-[var(--accent-hover)]"

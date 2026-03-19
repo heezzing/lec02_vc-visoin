@@ -35,16 +35,16 @@ export default function AnalysisPanel({
     <div className="space-y-4">
       {/* Prompt input */}
       <div className="bg-[var(--bg-secondary)] rounded-lg border border-[var(--border-color)] p-4">
-        <label className="block text-sm font-medium mb-2 text-[var(--text-secondary)]">
+        <label className="block text-sm font-medium mb-2 text-[var(--text-primary)]">
           분석 프롬프트
         </label>
         <textarea
           value={prompt}
           onChange={(e) => onPromptChange(e.target.value)}
           rows={3}
-          className="w-full bg-[var(--bg-tertiary)] border border-[var(--border-color)] rounded-lg px-3 py-2 text-sm
+          className="w-full bg-white border border-[var(--border-color)] rounded-lg px-3 py-2 text-sm
             text-[var(--text-primary)] placeholder-[var(--text-secondary)] resize-none
-            focus:outline-none focus:border-[var(--accent)] transition-colors"
+            focus:outline-none focus:border-[var(--accent)] focus:ring-1 focus:ring-[var(--accent)]/20 transition-colors"
           placeholder="이미지 분석 프롬프트를 입력하세요..."
         />
 
@@ -77,9 +77,9 @@ export default function AnalysisPanel({
                 onChange={(e) =>
                   onTemperatureChange(parseFloat(e.target.value))
                 }
-                className="w-full h-1.5 rounded-full appearance-none bg-[var(--border-color)] cursor-pointer
-                  [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3
-                  [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-[var(--accent)]"
+                className="w-full h-1.5 rounded-full appearance-none bg-[var(--accent-light)] cursor-pointer
+                  [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3.5 [&::-webkit-slider-thumb]:h-3.5
+                  [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-[var(--accent)] [&::-webkit-slider-thumb]:shadow-sm"
               />
             </div>
 
@@ -102,9 +102,9 @@ export default function AnalysisPanel({
                 onChange={(e) =>
                   onMaxTokensChange(parseInt(e.target.value, 10))
                 }
-                className="w-full h-1.5 rounded-full appearance-none bg-[var(--border-color)] cursor-pointer
-                  [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3
-                  [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-[var(--accent)]"
+                className="w-full h-1.5 rounded-full appearance-none bg-[var(--accent-light)] cursor-pointer
+                  [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3.5 [&::-webkit-slider-thumb]:h-3.5
+                  [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-[var(--accent)] [&::-webkit-slider-thumb]:shadow-sm"
               />
             </div>
           </div>
@@ -113,14 +113,14 @@ export default function AnalysisPanel({
 
       {/* Captured frame preview */}
       <div className="bg-[var(--bg-secondary)] rounded-lg border border-[var(--border-color)] p-4">
-        <h3 className="text-sm font-medium mb-3 text-[var(--text-secondary)]">
+        <h3 className="text-sm font-medium mb-3 text-[var(--text-primary)]">
           캡처된 프레임
         </h3>
         {capturedFrame ? (
           <img
             src={capturedFrame}
             alt="Captured frame"
-            className="w-full rounded-lg border border-[var(--border-color)]"
+            className="w-full rounded-lg border border-[var(--border-color)] shadow-sm"
           />
         ) : (
           <div className="aspect-video bg-[var(--bg-tertiary)] rounded-lg border border-[var(--border-color)] flex items-center justify-center">
@@ -133,7 +133,7 @@ export default function AnalysisPanel({
 
       {/* Analysis result */}
       <div className="bg-[var(--bg-secondary)] rounded-lg border border-[var(--border-color)] p-4">
-        <h3 className="text-sm font-medium mb-3 text-[var(--text-secondary)]">
+        <h3 className="text-sm font-medium mb-3 text-[var(--text-primary)]">
           분석 결과
         </h3>
 
@@ -157,8 +157,8 @@ export default function AnalysisPanel({
           </div>
         ) : analysisResult ? (
           <div>
-            <div className="bg-[var(--bg-tertiary)] rounded-lg p-4 border border-[var(--border-color)]">
-              <p className="text-sm leading-relaxed whitespace-pre-wrap">
+            <div className="bg-white rounded-lg p-4 border border-[var(--border-color)] shadow-sm">
+              <p className="text-sm leading-relaxed whitespace-pre-wrap text-[var(--text-primary)]">
                 {analysisResult}
               </p>
             </div>
